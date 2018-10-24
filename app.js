@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 var exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
-
+const bodyParser = require('body-parser');
 
 
 mongoose.connect('mongodb://localhost/rotten-potatoes');
@@ -10,15 +10,11 @@ const Review = mongoose.model('Review', {
   title: String,
   movieTitle: String
 });
+
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-// OUR MOCK ARRAY OF PROJECTS
-//let reviews = [
-//  { title: "Great Review", movieTitle: "Batman II" },
-//  { title: "Awesome Movie", movieTitle: "Titanic" }
-//]
-
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // INDEX
@@ -32,16 +28,20 @@ app.get('/', (req, res) => {
     })
 })
 
+// NEW
+app.get('/reviews/new', (req, res) => {
+  res.render('reviews-new', {});
+})
 
-//app.get('/', (req, res) => {
-//  res.send('Hello World!')
-//})
-
-//app.get('/', (req, res) => {
-//  res.render('home', { msg: 'Handlebars are Cool!' });
-//})
-
-
+// CREATE
+app.post('/reviews', (req, res) => {
+  Review.create(req.body).then((review) => {
+    console.log(review);
+    res.redirect('/');
+  }).catch((err) => {
+    console.log(err.message);
+  })
+})
 
 
 
