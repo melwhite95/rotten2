@@ -1,17 +1,16 @@
 const express = require('express')
 const methodOverride = require('method-override')
+const reviews = require('./controllers/reviews');
 const app = express()
 var exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const Review = require('./models/review');
 
 
-mongoose.connect('mongodb://localhost/rotten-potatoes');
-  const Review = mongoose.model('Review', {
-    title: String,
-    description: String,
-    movieTitle: String
-  });
+mongoose.connect('mongodb://localhost/rotten-potatoes', {useNewUrlParser: true})
+
+
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -83,3 +82,4 @@ app.delete('/reviews/:id', function (req, res) {
 app.listen(3008, () => {
   console.log('We out here on 3008')
 })
+module.exports = app;
