@@ -8,6 +8,9 @@ const bodyParser = require('body-parser');
 const Review = require('./models/review');
 
 
+//const port = process.env.PORT || 3000;
+
+
 mongoose.connect('mongodb://localhost/rotten-potatoes', {useNewUrlParser: true})
 
 
@@ -78,7 +81,7 @@ app.delete('/reviews/:id', function (req, res) {
   })
 })
 
-
+//app.listen(port);
 app.listen(3008, () => {
   console.log('We out here on 3008')
 })
